@@ -26,8 +26,12 @@ struct QuizBrain {
     
     var questionNumber = 0
     
-    func checkAnswer(_ userAnswer: String) -> Bool {
-        return userAnswer == quiz[questionNumber].answer
+    var scores: [Int: Bool] = [:]
+    
+    mutating func checkAnswer(_ userAnswer: String) -> Bool {
+        let result = userAnswer == quiz[questionNumber].answer
+        scores[questionNumber] = result
+        return result
     }
     
     func getQuestionText() -> String {
@@ -43,6 +47,13 @@ struct QuizBrain {
             questionNumber += 1
         } else {
             questionNumber = 0
+            scores.removeAll()
         }
+    }
+    
+    func getScore() -> Int {
+        return scores.filter { (key: Int, value: Bool) in
+            value
+        }.count
     }
 }
